@@ -1,0 +1,123 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h> 
+#include <time.h>
+#include <conio.h>
+
+
+
+#define MAX_VERTICES 10  // Максимальное количество вершин в графе
+#define MAX_EDGES 20     // Максимальное количество рёбер в графе
+
+int main() {
+    setlocale(LC_ALL, "Russian");
+    int n;  // Количество вершин
+    int m;  // Количество рёбер
+    int i, j, k;
+    int incidenceMatrix[MAX_VERTICES][MAX_EDGES];
+    int degree = 0;
+    int isolatedVertices = 0;
+    int colcVertices = 0;
+    int dominVertices = 0;
+    // Инициализация генератора случайных чисел
+    srand(time(NULL));
+    int an = 0;
+    // Введите количество вершин и рёбер графа
+    printf("Введите количество вершин: ", MAX_VERTICES);
+    scanf_s("%d", &n);
+    printf("Введите количество рёбер: ", MAX_EDGES);
+    scanf_s("%d", &m);
+    int netverj;
+    // Генерация матрицы инцидентности
+   // printf("Матрица инцидентности графа:\n");
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < m; j++) {
+            incidenceMatrix[i][j] = 0;  // Инициализируем все значения нулем
+        }
+    }
+    if (m == 0) goto h2;
+
+    for (k = 0; k < m; k++) {
+    h1:
+        printf("Введите номера вершин, инцидентных ребру %d: ", k, n - 1);
+        int vertex1, vertex2;
+        
+        if (n == 1)
+        {
+        h2:
+            printf("Введите номера вершин, инцидентных ребру %d: ", n - 1);
+            scanf_s("%d", &vertex1);
+            incidenceMatrix[vertex1][vertex1] = 1;
+
+            printf("Размер графа: %d вершин, %d рёбер\n", n, m);
+            for (i = 0; i < n; i++) {
+                degree = 0;
+                for (j = 0; j < m; j++) {
+                    if (incidenceMatrix[i][j] == 1) {
+                        degree++;
+                    }
+                }
+                if (degree == 0) {
+                    isolatedVertices++;
+                }
+                else if (degree == 1) {
+                    colcVertices++;
+                }
+                if (degree == n + 1) {
+                    dominVertices++;
+                }
+            }
+            
+           
+            printf("Концевых вершин: %d\n", colcVertices);
+            printf("Изолированных вершин: %d\n", isolatedVertices);
+            printf("Доминирующих вершинa: %d\n", dominVertices);
+            exit(0);
+            
+
+        }
+        scanf_s("%d %d", &vertex1, &vertex2);
+        if (vertex1 > n || vertex2 > n)
+        {
+            printf("Такой вершины нет)\n");
+            goto h1;
+        }
+
+        incidenceMatrix[vertex1][k] = 1;
+        incidenceMatrix[vertex2][k] = 1;
+    }
+
+    // Вывод матрицы инцидентности
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < m; j++) {
+            printf("%d ", incidenceMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("Размер графа: %d вершин, %d рёбер\n", n, m);
+
+    for (i = 0; i < n; i++) {
+        degree = 0;
+        for (j = 0; j < m; j++) {
+            if (incidenceMatrix[i][j] == 1) {
+                degree++;
+            }
+        }
+        if (degree == 0) {
+            isolatedVertices++;
+        }
+        else if (degree == 1) {
+            colcVertices++;
+        }
+        if (degree == n - 1) {
+            dominVertices++;
+        }
+    }
+
+    printf("Изолированных вершин: %d\n", isolatedVertices);
+    printf("Концевых вершин: %d\n", colcVertices);
+    printf("Доминирующих вершин: %d\n", dominVertices);
+
+    return 0;
+}
